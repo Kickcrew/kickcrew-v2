@@ -1,50 +1,93 @@
+import { Calendar, Trophy, Users, MapPin } from "lucide-react";
+import Container from "../ui/Container";
+import SectionTitle from "../ui/SectionTitle";
+import Button from "../ui/Button";
+
 export default function Tournament() {
   return (
-   <section
-  id="tournaments"
-  className="bg-black text-white py-24"
->
-      <div className="max-w-6xl mx-auto px-6">
+    <section
+      id="tournaments"
+      className="bg-black text-white py-24"
+    >
+      <Container>
 
-        <div className="border border-[#D4AF37] rounded-2xl p-10 bg-[#111111]">
+        <SectionTitle
+          eyebrow="Featured Tournament"
+          title="KICKCREW Valorant Championship"
+          description="Compete against the best teams in Kenya and showcase your skills on the national stage."
+        />
 
-          <p className="text-[#D4AF37] uppercase tracking-[0.3em] font-semibold">
-            Upcoming Tournament
-          </p>
+        <div className="bg-[#111111] border border-[#D4AF37]/20 rounded-2xl overflow-hidden hover:border-[#D4AF37] hover:shadow-[0_0_35px_rgba(212,175,55,0.25)] transition-all duration-300">
 
-          <h2 className="text-4xl font-bold mt-4">
-            KICKCREW Community Championship
-          </h2>
+          <div className="grid lg:grid-cols-2">
 
-          <p className="mt-6 text-gray-300 max-w-3xl">
-            Join Kenya's growing esports community and compete against the
-            country's best players. Register today and begin your journey
-            toward becoming Africa's next esports champion.
-          </p>
+            {/* Left Side */}
+            <div
+              className="min-h-[350px] bg-cover bg-center"
+              style={{
+               backgroundImage: "url('/images/hero-bg.png')",
+              }}
+            />
 
-          <div className="mt-8 flex flex-wrap gap-4">
+            {/* Right Side */}
+            <div className="p-10">
 
-            <div className="bg-black border border-[#D4AF37] px-5 py-3 rounded-lg">
-              📅 August 2026
-            </div>
+              <span className="inline-block bg-[#D4AF37] text-black text-sm font-bold px-4 py-2 rounded-full">
+                Registration Open
+              </span>
 
-            <div className="bg-black border border-[#D4AF37] px-5 py-3 rounded-lg">
-              📍 Nairobi, Kenya
-            </div>
+              <h3 className="text-4xl font-bold mt-6">
+                Valorant Championship 2026
+              </h3>
 
-            <div className="bg-black border border-[#D4AF37] px-5 py-3 rounded-lg">
-              🎮 EA FC 26
+              <p className="mt-6 text-gray-400 leading-8">
+                Assemble your squad and compete against Kenya's top Valorant
+                teams for glory, prizes, and national recognition.
+              </p>
+
+              <div className="grid grid-cols-2 gap-6 mt-10">
+
+                <div className="flex items-center gap-3">
+                  <Calendar className="text-[#D4AF37]" />
+                  <span>15 August 2026</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <Trophy className="text-[#D4AF37]" />
+                  <span>KES 100,000 Prize Pool</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <Users className="text-[#D4AF37]" />
+                  <span>5v5 Teams</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <MapPin className="text-[#D4AF37]" />
+                  <span>Nairobi & Online</span>
+                </div>
+
+              </div>
+
+              <div className="mt-10 flex flex-col sm:flex-row gap-4">
+                <Button
+                  text="Register Now"
+                  variant="primary"
+                />
+
+                <Button
+                  text="Tournament Details"
+                  variant="secondary"
+                />
+              </div>
+
             </div>
 
           </div>
 
-          <button className="mt-10 bg-[#D4AF37] text-black px-8 py-4 rounded-lg font-semibold hover:bg-yellow-500 transition">
-            Register Now
-          </button>
-
         </div>
 
-      </div>
+      </Container>
     </section>
   );
 }
