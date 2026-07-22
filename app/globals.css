@@ -32,4 +32,6 @@ h5,
 h6 {
   font-family: var(--font-heading), sans-serif;
   letter-spacing: 0.04em;
+}html {
+  scroll-behavior: smooth;
 }
