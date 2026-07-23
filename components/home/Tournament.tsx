@@ -1,93 +1,111 @@
-import { Calendar, Trophy, Users, MapPin } from "lucide-react";
-import Container from "../ui/Container";
-import SectionTitle from "../ui/SectionTitle";
+import Countdown from "./Countdown";
+import FadeIn from "../animations/FadeIn";
 import Button from "../ui/Button";
+import {
+  Trophy,
+  Calendar,
+  MapPin,
+  Users,
+} from "lucide-react";
 
 export default function Tournament() {
   return (
     <section
       id="tournaments"
-      className="bg-black text-white py-24"
+      className="relative py-28 text-white"
+      style={{
+        backgroundImage: "url('/images/tournament-bg.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
-      <Container>
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-black/80"></div>
 
-        <SectionTitle
-          eyebrow="Featured Tournament"
-          title="KICKCREW Valorant Championship"
-          description="Compete against the best teams in Kenya and showcase your skills on the national stage."
-        />
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
 
-        <div className="bg-[#111111] border border-[#D4AF37]/20 rounded-2xl overflow-hidden hover:border-[#D4AF37] hover:shadow-[0_0_35px_rgba(212,175,55,0.25)] transition-all duration-300">
+        <FadeIn>
 
-          <div className="grid lg:grid-cols-2">
+          <div className="text-center">
 
-            {/* Left Side */}
-            <div
-              className="min-h-[350px] bg-cover bg-center"
-              style={{
-               backgroundImage: "url('/images/hero-bg.png')",
-              }}
-            />
+            <span className="inline-block bg-[#D4AF37] text-black font-bold px-5 py-2 rounded-full mb-6">
+              🔥 NEXT MAJOR EVENT
+            </span>
 
-            {/* Right Side */}
-            <div className="p-10">
+            <h2 className="text-5xl md:text-6xl font-bold">
+              KICKCREW Valorant Open
+            </h2>
 
-              <span className="inline-block bg-[#D4AF37] text-black text-sm font-bold px-4 py-2 rounded-full">
-                Registration Open
-              </span>
+            <p className="mt-6 max-w-3xl mx-auto text-gray-300 leading-8">
+              Kenya's premier Valorant tournament where the nation's
+              best teams battle for prestige, cash prizes, and a place
+              among Africa's elite.
+            </p>
 
-              <h3 className="text-4xl font-bold mt-6">
-                Valorant Championship 2026
-              </h3>
+          </div>
 
-              <p className="mt-6 text-gray-400 leading-8">
-                Assemble your squad and compete against Kenya's top Valorant
-                teams for glory, prizes, and national recognition.
-              </p>
+        </FadeIn>
 
-              <div className="grid grid-cols-2 gap-6 mt-10">
+        <FadeIn>
+          <Countdown />
+        </FadeIn>
 
-                <div className="flex items-center gap-3">
-                  <Calendar className="text-[#D4AF37]" />
-                  <span>15 August 2026</span>
-                </div>
+        <div className="grid md:grid-cols-4 gap-6 mt-16">
 
-                <div className="flex items-center gap-3">
-                  <Trophy className="text-[#D4AF37]" />
-                  <span>KES 100,000 Prize Pool</span>
-                </div>
+          <div className="bg-black/60 backdrop-blur-md rounded-xl p-6 border border-[#D4AF37]/30 text-center">
+            <Trophy className="mx-auto text-[#D4AF37]" size={36} />
+            <h3 className="mt-4 text-[#D4AF37] font-semibold">
+              Prize Pool
+            </h3>
+            <p className="text-2xl font-bold mt-2">
+              KES 100,000
+            </p>
+          </div>
 
-                <div className="flex items-center gap-3">
-                  <Users className="text-[#D4AF37]" />
-                  <span>5v5 Teams</span>
-                </div>
+          <div className="bg-black/60 backdrop-blur-md rounded-xl p-6 border border-[#D4AF37]/30 text-center">
+            <Calendar className="mx-auto text-[#D4AF37]" size={36} />
+            <h3 className="mt-4 text-[#D4AF37] font-semibold">
+              Date
+            </h3>
+            <p className="text-2xl font-bold mt-2">
+              Sept 20, 2026
+            </p>
+          </div>
 
-                <div className="flex items-center gap-3">
-                  <MapPin className="text-[#D4AF37]" />
-                  <span>Nairobi & Online</span>
-                </div>
+          <div className="bg-black/60 backdrop-blur-md rounded-xl p-6 border border-[#D4AF37]/30 text-center">
+            <Users className="mx-auto text-[#D4AF37]" size={36} />
+            <h3 className="mt-4 text-[#D4AF37] font-semibold">
+              Teams
+            </h3>
+            <p className="text-2xl font-bold mt-2">
+              32 Teams
+            </p>
+          </div>
 
-              </div>
-
-              <div className="mt-10 flex flex-col sm:flex-row gap-4">
-                <Button
-                  text="Register Now"
-                  variant="primary"
-                />
-
-                <Button
-                  text="Tournament Details"
-                  variant="secondary"
-                />
-              </div>
-
-            </div>
-
+          <div className="bg-black/60 backdrop-blur-md rounded-xl p-6 border border-[#D4AF37]/30 text-center">
+            <MapPin className="mx-auto text-[#D4AF37]" size={36} />
+            <h3 className="mt-4 text-[#D4AF37] font-semibold">
+              Venue
+            </h3>
+            <p className="text-2xl font-bold mt-2">
+              Nairobi
+            </p>
           </div>
 
         </div>
 
-      </Container>
+        <div className="flex justify-center gap-5 mt-14 flex-wrap">
+
+          <Button text="Register Now" />
+
+          <Button
+            text="Tournament Details"
+            variant="secondary"
+          />
+
+        </div>
+
+      </div>
     </section>
   );
 }

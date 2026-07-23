@@ -34,4 +34,7 @@ h6 {
   letter-spacing: 0.04em;
 }html {
   scroll-behavior: smooth;
+  html {
+  scroll-behavior: smooth;
+}
 }
