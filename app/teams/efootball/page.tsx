@@ -183,6 +183,83 @@ export default function EFootballPage() {
         </div>
 
       </section>
+                  {/* Join the Division */}
+
+      <section className="bg-[#111111] py-24">
+
+        <div className="max-w-5xl mx-auto px-6 text-center">
+
+          <p className="uppercase tracking-[0.3em] text-[#D4AF37] font-semibold">
+            Join the Division
+          </p>
+
+          <h2 className="text-5xl font-bold mt-4">
+            Become Part of KICKCREW
+          </h2>
+
+          <p className="mt-8 text-xl text-gray-300 leading-8">
+            We are looking for passionate EA SPORTS FC players who are
+            committed to improving their skills, competing professionally,
+            and helping grow Kenya's esports community.
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-8 mt-16">
+
+            <div className="bg-black border border-[#D4AF37]/20 rounded-2xl p-8 text-left">
+
+              <h3 className="text-2xl font-bold text-[#D4AF37]">
+                We're Looking For
+              </h3>
+
+              <ul className="mt-6 space-y-4 text-gray-300">
+
+                <li>✅ Active EA SPORTS FC players</li>
+
+                <li>✅ Positive attitude and sportsmanship</li>
+
+                <li>✅ Commitment to training and tournaments</li>
+
+                <li>✅ Teamwork and communication</li>
+
+                <li>✅ Desire to grow with KICKCREW</li>
+
+              </ul>
+
+            </div>
+
+            <div className="bg-black border border-[#D4AF37]/20 rounded-2xl p-8 text-left">
+
+              <h3 className="text-2xl font-bold text-[#D4AF37]">
+                Why Join?
+              </h3>
+
+              <ul className="mt-6 space-y-4 text-gray-300">
+
+                <li>🏆 Participate in tournaments</li>
+
+                <li>🎮 Improve through competitive play</li>
+
+                <li>🤝 Join a growing gaming community</li>
+
+                <li>🌍 Represent KICKCREW in competitions</li>
+
+                <li>🚀 Be part of our journey across Africa</li>
+
+              </ul>
+
+            </div>
+
+          </div>
+
+          <button className="mt-16 bg-[#D4AF37] text-black px-10 py-4 rounded-lg font-bold hover:bg-yellow-500 transition duration-300">
+            Apply to Join
+          </button>
+
+        </div>
+
+      </section>
+      
+
 
     </main>
   );
