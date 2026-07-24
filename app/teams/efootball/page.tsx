@@ -96,6 +96,93 @@ export default function EFootballPage() {
         </div>
 
       </section>
+            {/* Current Tournament */}
+
+      <section className="bg-black py-24">
+
+        <div className="max-w-7xl mx-auto px-6">
+
+          <div className="text-center">
+
+            <p className="uppercase tracking-[0.3em] text-[#D4AF37] font-semibold">
+              Current Tournament
+            </p>
+
+            <h2 className="text-5xl font-bold mt-4">
+              KICKCREW eFootball Championship 2026
+            </h2>
+
+            <p className="mt-6 max-w-3xl mx-auto text-gray-400 leading-8">
+              Our flagship tournament brings together passionate eFootball
+              players from across Kenya to compete, connect, and showcase
+              their skills in a professional competitive environment.
+            </p>
+
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16">
+
+            <div className="bg-[#111111] border border-[#D4AF37]/20 rounded-2xl p-8 text-center">
+
+              <h3 className="text-[#D4AF37] text-lg font-semibold">
+                Date
+              </h3>
+
+              <p className="mt-4 text-2xl font-bold">
+                Coming Soon
+              </p>
+
+            </div>
+
+            <div className="bg-[#111111] border border-[#D4AF37]/20 rounded-2xl p-8 text-center">
+
+              <h3 className="text-[#D4AF37] text-lg font-semibold">
+                Platform
+              </h3>
+
+              <p className="mt-4 text-2xl font-bold">
+                eFootball Mobile
+              </p>
+
+            </div>
+
+            <div className="bg-[#111111] border border-[#D4AF37]/20 rounded-2xl p-8 text-center">
+
+              <h3 className="text-[#D4AF37] text-lg font-semibold">
+                Entry
+              </h3>
+
+              <p className="mt-4 text-2xl font-bold">
+                Open Registration
+              </p>
+
+            </div>
+
+            <div className="bg-[#111111] border border-[#D4AF37]/20 rounded-2xl p-8 text-center">
+
+              <h3 className="text-[#D4AF37] text-lg font-semibold">
+                Prize
+              </h3>
+
+              <p className="mt-4 text-2xl font-bold">
+                Group Stage + Knockouts
+              </p>
+
+            </div>
+
+          </div>
+
+          <div className="text-center mt-16">
+
+            <button className="bg-[#D4AF37] text-black px-10 py-4 rounded-lg font-bold hover:bg-yellow-500 transition duration-300">
+              Register for Tournament
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
 
     </main>
   );
