@@ -56,14 +56,17 @@ export default function Hero() {
         <div className="mt-12 flex flex-col sm:flex-row justify-center gap-5">
 
           <Button
-  text="Join Tournament"
+  text="Join KICKCREW"
+  href="/join"
   variant="primary"
 />
 
 <Button
-  text="Learn More"
+  text="Join Tournament"
+  href="#tournaments"
   variant="secondary"
 />
+
 
         </div>
 
