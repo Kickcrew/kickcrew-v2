@@ -1,4 +1,18 @@
+"use client";
+
+import { useActionState } from "react";
+import { login } from "./actions";
+
+const initialState = {
+  error: "",
+};
+
 export default function AdminLoginPage() {
+  const [state, formAction, pending] = useActionState(
+    login,
+    initialState
+  );
+
   return (
     <main className="min-h-screen bg-black flex items-center justify-center px-6">
 
@@ -20,25 +34,39 @@ export default function AdminLoginPage() {
 
         </div>
 
-        <form className="mt-10 space-y-6">
+        <form
+          action={formAction}
+          className="mt-10 space-y-6"
+        >
 
           <input
+            name="email"
             type="email"
             placeholder="Email Address"
+            required
             className="w-full bg-black border border-gray-700 rounded-xl p-4 text-white focus:border-[#D4AF37] outline-none"
           />
 
           <input
+            name="password"
             type="password"
             placeholder="Password"
+            required
             className="w-full bg-black border border-gray-700 rounded-xl p-4 text-white focus:border-[#D4AF37] outline-none"
           />
+
+          {state?.error && (
+            <p className="text-red-500 text-sm">
+              {state.error}
+            </p>
+          )}
 
           <button
             type="submit"
-            className="w-full bg-[#D4AF37] text-black py-4 rounded-xl font-bold hover:bg-yellow-400 transition"
+            disabled={pending}
+            className="w-full bg-[#D4AF37] text-black py-4 rounded-xl font-bold hover:bg-yellow-400 transition disabled:opacity-60"
           >
-            Sign In
+            {pending ? "Signing In..." : "Sign In"}
           </button>
 
         </form>
