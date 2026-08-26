@@ -21,6 +21,8 @@ export default async function AdminLayout({
   return (
     <div className="min-h-screen flex bg-[#0B0B0B] text-white">
 
+      {/* SIDEBAR */}
+
       <aside className="w-72 bg-black border-r border-[#D4AF37]/20">
 
         <div className="p-8 border-b border-[#D4AF37]/20">
@@ -35,33 +37,69 @@ export default async function AdminLayout({
 
         <nav className="p-6 space-y-2">
 
-          <Link href="/admin/dashboard" className="block px-4 py-3 rounded-xl hover:bg-[#D4AF37] hover:text-black transition">
+          <Link
+            href="/admin/dashboard"
+            className="block px-4 py-3 rounded-xl hover:bg-[#D4AF37] hover:text-black transition"
+          >
             📊 Dashboard
           </Link>
 
-          <Link href="/admin/applicants" className="block px-4 py-3 rounded-xl hover:bg-[#D4AF37] hover:text-black transition">
+          <Link
+            href="/admin/applicants"
+            className="block px-4 py-3 rounded-xl hover:bg-[#D4AF37] hover:text-black transition"
+          >
             👥 Applicants
           </Link>
 
-          <Link href="/admin/players" className="block px-4 py-3 rounded-xl hover:bg-[#D4AF37] hover:text-black transition">
+          <Link
+            href="/admin/players"
+            className="block px-4 py-3 rounded-xl hover:bg-[#D4AF37] hover:text-black transition"
+          >
             🎯 Players
           </Link>
 
-          <Link href="/admin/teams" className="block px-4 py-3 rounded-xl hover:bg-[#D4AF37] hover:text-black transition">
+          <Link
+            href="/admin/teams"
+            className="block px-4 py-3 rounded-xl hover:bg-[#D4AF37] hover:text-black transition"
+          >
             🏆 Teams
           </Link>
 
-          <Link href="/admin/tournaments" className="block px-4 py-3 rounded-xl hover:bg-[#D4AF37] hover:text-black transition">
-            🎮 Tournaments
+          <Link
+            href="/admin/games"
+            className="block px-4 py-3 rounded-xl hover:bg-[#D4AF37] hover:text-black transition"
+          >
+            🎮 Games
           </Link>
 
-          <Link href="/admin/settings" className="block px-4 py-3 rounded-xl hover:bg-[#D4AF37] hover:text-black transition">
+          <Link
+            href="/admin/tournaments"
+            className="block px-4 py-3 rounded-xl hover:bg-[#D4AF37] hover:text-black transition"
+          >
+            🏆 Tournaments
+          </Link>
+
+          {/* GLOBAL MATCHES */}
+
+          <Link
+            href="/admin/matches"
+            className="block px-4 py-3 rounded-xl hover:bg-[#D4AF37] hover:text-black transition"
+          >
+            ⚔️ Matches
+          </Link>
+
+          <Link
+            href="/admin/settings"
+            className="block px-4 py-3 rounded-xl hover:bg-[#D4AF37] hover:text-black transition"
+          >
             ⚙️ Settings
           </Link>
 
         </nav>
 
       </aside>
+
+      {/* MAIN CONTENT */}
 
       <div className="flex-1">
 

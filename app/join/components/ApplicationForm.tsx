@@ -1,9 +1,51 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+interface Game {
+  id: number;
+  game_name: string;
+}
+
+interface Division {
+  id: number;
+  division_name: string;
+}
 
 export default function ApplicationForm() {
   const [submitted, setSubmitted] = useState(false);
+
+  const [games, setGames] = useState<Game[]>([]);
+  const [divisions, setDivisions] = useState<Division[]>([]);
+  const [loadingOptions, setLoadingOptions] = useState(true);
+
+  useEffect(() => {
+    async function loadOptions() {
+      try {
+        const [gamesResponse, divisionsResponse] = await Promise.all([
+          fetch("/api/games"),
+          fetch("/api/divisions"),
+        ]);
+
+        const gamesResult = await gamesResponse.json();
+        const divisionsResult = await divisionsResponse.json();
+
+        if (gamesResult.success) {
+          setGames(gamesResult.games);
+        }
+
+        if (divisionsResult.success) {
+          setDivisions(divisionsResult.divisions);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoadingOptions(false);
+      }
+    }
+
+    loadOptions();
+  }, []);
 
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
@@ -35,6 +77,8 @@ export default function ApplicationForm() {
 
       <div className="max-w-4xl mx-auto px-6">
 
+        {/* Heading */}
+
         <div className="text-center">
 
           <p className="uppercase tracking-[0.3em] text-[#D4AF37] font-semibold">
@@ -51,10 +95,14 @@ export default function ApplicationForm() {
 
         </div>
 
+        {/* Form */}
+
         <form
           onSubmit={handleSubmit}
           className="mt-16 space-y-6"
         >
+
+          {/* Full Name + Email */}
 
           <div className="grid md:grid-cols-2 gap-6">
 
@@ -76,6 +124,8 @@ export default function ApplicationForm() {
 
           </div>
 
+          {/* Phone + Country */}
+
           <div className="grid md:grid-cols-2 gap-6">
 
             <input
@@ -96,28 +146,73 @@ export default function ApplicationForm() {
 
           </div>
 
+          {/* Game + Division */}
+
           <div className="grid md:grid-cols-2 gap-6">
+
+            {/* Game */}
+
+            <select
+              name="game"
+              required
+              disabled={loadingOptions}
+              className="bg-black border border-gray-700 rounded-xl p-4 disabled:opacity-60"
+            >
+
+              <option value="">
+                {loadingOptions ? "Loading Games..." : "Select Game"}
+              </option>
+
+              {games.map((game) => (
+                <option
+                  key={game.id}
+                  value={game.game_name}
+                >
+                  {game.game_name}
+                </option>
+              ))}
+
+            </select>
+
+            {/* Division */}
 
             <select
               name="division"
               required
-              className="bg-black border border-gray-700 rounded-xl p-4"
+              disabled={loadingOptions}
+              className="bg-black border border-gray-700 rounded-xl p-4 disabled:opacity-60"
             >
-              <option value="">Select Division</option>
-              <option>EA SPORTS FC</option>
-              <option>Valorant</option>
-              <option>PUBG Mobile</option>
+
+              <option value="">
+                {loadingOptions
+                  ? "Loading Divisions..."
+                  : "Select Division"}
+              </option>
+
+              {divisions.map((division) => (
+                <option
+                  key={division.id}
+                  value={division.division_name}
+                >
+                  {division.division_name}
+                </option>
+              ))}
+
             </select>
 
-            <input
-              name="ign"
-              type="text"
-              placeholder="In-Game Name (IGN)"
-              required
-              className="bg-black border border-gray-700 rounded-xl p-4 focus:border-[#D4AF37] outline-none"
-            />
-
           </div>
+
+          {/* IGN */}
+
+          <input
+            name="ign"
+            type="text"
+            placeholder="In-Game Name (IGN)"
+            required
+            className="w-full bg-black border border-gray-700 rounded-xl p-4 focus:border-[#D4AF37] outline-none"
+          />
+
+          {/* Rank + Platform */}
 
           <div className="grid md:grid-cols-2 gap-6">
 
@@ -133,14 +228,32 @@ export default function ApplicationForm() {
               required
               className="bg-black border border-gray-700 rounded-xl p-4"
             >
-              <option value="">Gaming Platform</option>
-              <option>PC</option>
-              <option>PlayStation</option>
-              <option>Xbox</option>
-              <option>Mobile</option>
+
+              <option value="">
+                Gaming Platform
+              </option>
+
+              <option value="PC">
+                PC
+              </option>
+
+              <option value="PlayStation">
+                PlayStation
+              </option>
+
+              <option value="Xbox">
+                Xbox
+              </option>
+
+              <option value="Mobile">
+                Mobile
+              </option>
+
             </select>
 
           </div>
+
+          {/* About */}
 
           <textarea
             name="about"
@@ -149,6 +262,8 @@ export default function ApplicationForm() {
             className="w-full bg-black border border-gray-700 rounded-xl p-4 focus:border-[#D4AF37] outline-none"
           />
 
+          {/* Motivation */}
+
           <textarea
             name="motivation"
             rows={5}
@@ -156,12 +271,16 @@ export default function ApplicationForm() {
             className="w-full bg-black border border-gray-700 rounded-xl p-4 focus:border-[#D4AF37] outline-none"
           />
 
+          {/* Submit */}
+
           <button
             type="submit"
             className="w-full bg-[#D4AF37] text-black py-4 rounded-xl font-bold hover:bg-yellow-400 transition"
           >
             Submit Application
           </button>
+
+          {/* Success Message */}
 
           {submitted && (
 

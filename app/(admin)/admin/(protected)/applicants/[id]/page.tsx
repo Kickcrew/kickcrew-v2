@@ -124,76 +124,97 @@ export default async function ApplicantDetailsPage({
           </div>
 
         </div>
-                {/* Gaming Information */}
+               {/* Gaming Information */}
 
-        <div className="mt-8 bg-[#111111] rounded-2xl border border-[#D4AF37]/20 p-8">
+<div className="mt-8 bg-[#111111] rounded-2xl border border-[#D4AF37]/20 p-8">
 
-          <h2 className="text-2xl font-bold mb-6">
-            Gaming Information
-          </h2>
+  <h2 className="text-2xl font-bold mb-6">
+    Gaming Information
+  </h2>
 
-          <div className="grid md:grid-cols-2 gap-8">
+  <div className="grid md:grid-cols-2 gap-8">
 
-            <div>
+    {/* Game */}
 
-              <p className="text-gray-400 text-sm">
-                Division
-              </p>
+    <div>
 
-              <p className="text-xl font-semibold mt-2">
-                {applicant.division}
-              </p>
+      <p className="text-gray-400 text-sm">
+        Game
+      </p>
 
-            </div>
+      <p className="text-xl font-semibold mt-2 text-[#D4AF37]">
+        {applicant.game || "Not specified"}
+      </p>
 
-            <div>
+    </div>
 
-              <p className="text-gray-400 text-sm">
-                In-Game Name
-              </p>
+    {/* Division */}
 
-              <p className="text-xl font-semibold mt-2">
-                {applicant.ign}
-              </p>
+    <div>
 
-            </div>
+      <p className="text-gray-400 text-sm">
+        Division
+      </p>
 
-            <div>
+      <p className="text-xl font-semibold mt-2">
+        {applicant.division || "Not specified"}
+      </p>
 
-              <p className="text-gray-400 text-sm">
-                Gaming Platform
-              </p>
+    </div>
 
-              <p className="text-xl font-semibold mt-2">
-                {applicant.platform}
-              </p>
+    {/* In-Game Name */}
 
-            </div>
+    <div>
 
-            <div>
+      <p className="text-gray-400 text-sm">
+        In-Game Name
+      </p>
 
-              <p className="text-gray-400 text-sm">
-                Current Status
-              </p>
+      <p className="text-xl font-semibold mt-2">
+        {applicant.ign || "Not specified"}
+      </p>
 
-              <span
-                className={`inline-block mt-2 px-4 py-2 rounded-full font-semibold ${
-                  applicant.status === "Approved"
-                    ? "bg-green-500/20 text-green-400"
-                    : applicant.status === "Rejected"
-                    ? "bg-red-500/20 text-red-400"
-                    : "bg-yellow-500/20 text-yellow-400"
-                }`}
-              >
-                {applicant.status}
-              </span>
+    </div>
 
-            </div>
+    {/* Gaming Platform */}
 
-          </div>
+    <div>
 
-        </div>
+      <p className="text-gray-400 text-sm">
+        Gaming Platform
+      </p>
 
+      <p className="text-xl font-semibold mt-2">
+        {applicant.platform || "Not specified"}
+      </p>
+
+    </div>
+
+    {/* Current Status */}
+
+    <div>
+
+      <p className="text-gray-400 text-sm">
+        Current Status
+      </p>
+
+      <span
+        className={`inline-block mt-2 px-4 py-2 rounded-full font-semibold ${
+          applicant.status === "Approved"
+            ? "bg-green-500/20 text-green-400"
+            : applicant.status === "Rejected"
+            ? "bg-red-500/20 text-red-400"
+            : "bg-yellow-500/20 text-yellow-400"
+        }`}
+      >
+        {applicant.status}
+      </span>
+
+    </div>
+
+  </div>
+
+</div>
         {/* About Applicant */}
 
         <div className="mt-8 bg-[#111111] rounded-2xl border border-[#D4AF37]/20 p-8">

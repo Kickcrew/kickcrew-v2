@@ -1,18 +1,23 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
-// GET one player
+// GET ONE PLAYER
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
 
-  const { data, error } = await supabase
-    .from("players")
-    .select("*")
-    .eq("id", id)
-    .single();
+ const { data, error } = await supabase
+  .from("players")
+  .select(`
+    *,
+    teams (
+      team_name
+    )
+  `)
+  .eq("id", id)
+  .single();
 
   if (error) {
     return NextResponse.json(
@@ -30,7 +35,7 @@ export async function GET(
   });
 }
 
-// UPDATE player
+// UPDATE PLAYER
 export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -45,7 +50,7 @@ export async function PUT(
       gamer_tag: body.gamer_tag,
       email: body.email,
       phone: body.phone,
-      team_id: body.team_id,
+      team_id: body.team_id || null,
       game: body.game,
       role: body.role,
       rank: body.rank,
@@ -68,10 +73,11 @@ export async function PUT(
 
   return NextResponse.json({
     success: true,
+    message: "Player updated successfully.",
   });
 }
 
-// DELETE player
+// DELETE PLAYER
 export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -95,5 +101,6 @@ export async function DELETE(
 
   return NextResponse.json({
     success: true,
+    message: "Player deleted successfully.",
   });
 }

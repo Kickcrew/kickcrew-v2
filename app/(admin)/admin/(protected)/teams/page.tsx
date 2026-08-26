@@ -6,25 +6,53 @@ import { useEffect, useState } from "react";
 interface Team {
   id: number;
   team_name: string;
-  division: string;
+  game_id: number | null;
+  division_id: number | null;
   captain: string;
   coach: string;
   status: string;
 }
 
+interface Game {
+  id: number;
+  game_name: string;
+}
+
+interface Division {
+  id: number;
+  division_name: string;
+}
+
 export default function TeamsPage() {
   const [teams, setTeams] = useState<Team[]>([]);
+  const [games, setGames] = useState<Game[]>([]);
+  const [divisions, setDivisions] = useState<Division[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Load all teams
   useEffect(() => {
-    async function loadTeams() {
+    async function loadData() {
       try {
-        const response = await fetch("/api/teams");
-        const result = await response.json();
+        const [teamsResponse, gamesResponse, divisionsResponse] =
+          await Promise.all([
+            fetch("/api/teams"),
+            fetch("/api/games"),
+            fetch("/api/divisions"),
+          ]);
 
-        if (result.success) {
-          setTeams(result.teams);
+        const teamsResult = await teamsResponse.json();
+        const gamesResult = await gamesResponse.json();
+        const divisionsResult = await divisionsResponse.json();
+
+        if (teamsResult.success) {
+          setTeams(teamsResult.teams);
+        }
+
+        if (gamesResult.success) {
+          setGames(gamesResult.games);
+        }
+
+        if (divisionsResult.success) {
+          setDivisions(divisionsResult.divisions);
         }
       } catch (error) {
         console.error(error);
@@ -33,10 +61,27 @@ export default function TeamsPage() {
       }
     }
 
-    loadTeams();
+    loadData();
   }, []);
 
-  // Delete a team
+  function getGameName(gameId: number | null) {
+    if (!gameId) return "-";
+
+    const game = games.find((game) => game.id === gameId);
+
+    return game?.game_name || "-";
+  }
+
+  function getDivisionName(divisionId: number | null) {
+    if (!divisionId) return "-";
+
+    const division = divisions.find(
+      (division) => division.id === divisionId
+    );
+
+    return division?.division_name || "-";
+  }
+
   async function deleteTeam(id: number) {
     const confirmed = window.confirm(
       "Are you sure you want to delete this team?"
@@ -70,6 +115,8 @@ export default function TeamsPage() {
   return (
     <div className="space-y-10">
 
+      {/* Header */}
+
       <div className="flex items-center justify-between">
 
         <div>
@@ -91,26 +138,56 @@ export default function TeamsPage() {
 
       </div>
 
+      {/* Teams Table */}
+
       <div className="bg-[#111111] rounded-2xl border border-[#D4AF37]/20 overflow-hidden">
 
         <table className="w-full">
 
           <thead className="bg-black">
+
             <tr>
-              <th className="text-left p-5">Team</th>
-              <th className="text-left">Division</th>
-              <th className="text-left">Captain</th>
-              <th className="text-left">Coach</th>
-              <th className="text-left">Status</th>
-              <th className="text-left">Action</th>
+
+              <th className="text-left p-5">
+                Team
+              </th>
+
+              <th className="text-left">
+                Game
+              </th>
+
+              <th className="text-left">
+                Division
+              </th>
+
+              <th className="text-left">
+                Captain
+              </th>
+
+              <th className="text-left">
+                Coach
+              </th>
+
+              <th className="text-left">
+                Status
+              </th>
+
+              <th className="text-left">
+                Action
+              </th>
+
             </tr>
+
           </thead>
 
           <tbody>
 
             {loading && (
               <tr>
-                <td colSpan={6} className="p-6 text-center text-gray-400">
+                <td
+                  colSpan={7}
+                  className="p-6 text-center text-gray-400"
+                >
                   Loading teams...
                 </td>
               </tr>
@@ -118,7 +195,10 @@ export default function TeamsPage() {
 
             {!loading && teams.length === 0 && (
               <tr>
-                <td colSpan={6} className="p-6 text-center text-gray-400">
+                <td
+                  colSpan={7}
+                  className="p-6 text-center text-gray-400"
+                >
                   No teams found.
                 </td>
               </tr>
@@ -130,39 +210,78 @@ export default function TeamsPage() {
                   key={team.id}
                   className="border-t border-[#222]"
                 >
+
+                  {/* Team */}
+
                   <td className="p-5 font-semibold">
                     {team.team_name}
                   </td>
 
-                  <td>{team.division}</td>
-
-                  <td>{team.captain || "-"}</td>
-
-                  <td>{team.coach || "-"}</td>
+                  {/* Game */}
 
                   <td>
+                    {getGameName(team.game_id)}
+                  </td>
+
+                  {/* Division */}
+
+                  <td>
+                    {getDivisionName(team.division_id)}
+                  </td>
+
+                  {/* Captain */}
+
+                  <td>
+                    {team.captain || "-"}
+                  </td>
+
+                  {/* Coach */}
+
+                  <td>
+                    {team.coach || "-"}
+                  </td>
+
+                  {/* Status */}
+
+                  <td>
+
                     <span className="bg-green-600 px-3 py-1 rounded-full text-sm">
                       {team.status || "Active"}
                     </span>
-                  </td>
-
-                  <td className="space-x-2">
-
-                    <Link
-                      href={`/admin/teams/${team.id}`}
-                      className="inline-block bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-500 transition"
-                    >
-                      Edit
-                    </Link>
-
-                    <button
-                      onClick={() => deleteTeam(team.id)}
-                      className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-500 transition"
-                    >
-                      Delete
-                    </button>
 
                   </td>
+
+                  {/* Actions */}
+
+                  <td className="pr-5">
+
+                    <div className="flex gap-2">
+
+                      <Link
+                        href={`/admin/teams/${team.id}/view`}
+                        className="bg-emerald-600 hover:bg-emerald-500 px-4 py-2 rounded-lg text-sm font-semibold transition"
+                      >
+                        View
+                      </Link>
+
+                      <Link
+                        href={`/admin/teams/${team.id}`}
+                        className="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-lg text-sm font-semibold transition"
+                      >
+                        Edit
+                      </Link>
+
+                      <button
+                        onClick={() => deleteTeam(team.id)}
+                        className="bg-red-600 hover:bg-red-500 px-4 py-2 rounded-lg text-sm font-semibold transition"
+                      >
+                        Delete
+                      </button>
+
+                    </div>
+
+                  </td>
+
                 </tr>
               ))}
 

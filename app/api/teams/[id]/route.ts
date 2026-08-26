@@ -1,32 +1,60 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
-// GET a single team
+// GET a single team with its players
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
 
-  const { data, error } = await supabase
+  // Get the team
+  const { data: team, error: teamError } = await supabase
     .from("teams")
     .select("*")
     .eq("id", id)
     .single();
 
-  if (error) {
+  if (teamError) {
     return NextResponse.json(
       {
         success: false,
-        message: error.message,
+        message: teamError.message,
       },
       { status: 404 }
     );
   }
 
+  // Get players belonging to this team
+  const { data: players, error: playersError } = await supabase
+    .from("players")
+    .select(`
+      id,
+      full_name,
+      gamer_tag,
+      game,
+      role,
+      rank,
+      status,
+      profile_photo
+    `)
+    .eq("team_id", id)
+    .order("gamer_tag", { ascending: true });
+
+  if (playersError) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: playersError.message,
+      },
+      { status: 500 }
+    );
+  }
+
   return NextResponse.json({
     success: true,
-    team: data,
+    team,
+    players: players || [],
   });
 }
 
@@ -42,7 +70,8 @@ export async function PUT(
     .from("teams")
     .update({
       team_name: body.team_name,
-      division: body.division,
+      game_id: body.game_id,
+      division_id: body.division_id,
       captain: body.captain,
       coach: body.coach,
       description: body.description,
@@ -50,6 +79,8 @@ export async function PUT(
     .eq("id", id);
 
   if (error) {
+    console.error("Update team error:", error);
+
     return NextResponse.json(
       {
         success: false,
@@ -64,7 +95,6 @@ export async function PUT(
     message: "Team updated successfully.",
   });
 }
-
 // DELETE a team
 export async function DELETE(
   request: Request,

@@ -9,17 +9,21 @@ export async function POST(request: Request) {
       .from("applicants")
       .insert([
         {
-          full_name: body.fullName,
-          email: body.email,
-          phone: body.phone,
-          country: body.country,
-          division: body.division,
-          ign: body.ign,
-          rank: body.rank,
-          platform: body.platform,
-          about: body.about,
-          motivation: body.motivation,
-        },
+  full_name: body.fullName,
+  email: body.email,
+  phone: body.phone,
+  country: body.country,
+
+  // Separate game from division
+  game: body.game,
+  division: body.division,
+
+  ign: body.ign,
+  rank: body.rank,
+  platform: body.platform,
+  about: body.about,
+  motivation: body.motivation,
+},
       ]);
 
     if (error) {
@@ -40,7 +44,6 @@ export async function POST(request: Request) {
     });
 
   } catch (err) {
-
     console.error(err);
 
     return NextResponse.json(
