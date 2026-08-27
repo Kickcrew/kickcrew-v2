@@ -8,19 +8,45 @@ interface Team {
   id: number;
   team_name: string;
 }
+
 interface Game {
   id: number;
   game_name: string;
 }
+
+interface PlayerForm {
+  profile_photo: string;
+  full_name: string;
+  gamer_tag: string;
+  email: string;
+  phone: string;
+  team_id: string;
+  game: string;
+  role: string;
+  rank: string;
+  country: string;
+  status: string;
+  bio: string;
+}
+
+const TEAM_GAMES = [
+  "Valorant",
+  "Counter-Strike 2",
+  "Call of Duty Mobile",
+  "PUBG Mobile",
+  "Mobile Legends",
+  "League of Legends",
+  "Dota 2",
+];
 
 export default function NewPlayerPage() {
   const router = useRouter();
 
   const [teams, setTeams] = useState<Team[]>([]);
   const [games, setGames] = useState<Game[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<PlayerForm>({
     profile_photo: "",
     full_name: "",
     gamer_tag: "",
@@ -35,28 +61,34 @@ export default function NewPlayerPage() {
     bio: "",
   });
 
+
   useEffect(() => {
-    async function loadTeams() {
+    async function loadData() {
       try {
-        const response = await fetch("/api/teams");
-        const result = await response.json();
+        const teamResponse = await fetch("/api/teams");
+        const teamResult = await teamResponse.json();
 
-        if (result.success) {
-          setTeams(result.teams);
+        if (teamResult.success) {
+          setTeams(teamResult.teams);
         }
-        const gameResponse = await fetch("/api/games");
-const gameResult = await gameResponse.json();
 
-if (gameResult.success) {
-  setGames(gameResult.games);
-}
+
+        const gameResponse = await fetch("/api/games");
+        const gameResult = await gameResponse.json();
+
+        if (gameResult.success) {
+          setGames(gameResult.games);
+        }
+
       } catch (error) {
         console.error(error);
       }
     }
 
-    loadTeams();
+    loadData();
   }, []);
+
+
 
   function handleChange(
     e: React.ChangeEvent<
@@ -65,66 +97,114 @@ if (gameResult.success) {
       HTMLTextAreaElement
     >
   ) {
-    setForm((previous) => ({
-      ...previous,
-      [e.target.name]: e.target.value,
-    }));
+
+    const { name, value } = e.target;
+
+
+    setForm((previous) => {
+
+      const updated = {
+        ...previous,
+        [name]: value,
+      };
+
+
+      if (
+        name === "game" &&
+        !TEAM_GAMES.includes(value)
+      ) {
+        updated.team_id = "";
+      }
+
+
+      return updated;
+
+    });
+
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+
+
+  async function handleSubmit(
+    e: React.FormEvent
+  ) {
+
     e.preventDefault();
 
-    setLoading(true);
+    setSaving(true);
+
 
     try {
-      const response = await fetch("/api/players", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
+
+      const response = await fetch(
+        "/api/players",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        }
+      );
+
 
       const result = await response.json();
 
+
       if (!result.success) {
         alert(result.message);
-        setLoading(false);
+        setSaving(false);
         return;
       }
+
 
       alert("Player created successfully!");
 
       router.push("/admin/players");
       router.refresh();
 
-    } catch (error) {
+
+    } catch(error){
+
       console.error(error);
       alert("Something went wrong.");
+
     }
 
-    setLoading(false);
+
+    setSaving(false);
+
   }
 
+
+
   return (
-    <div className="max-w-5xl mx-auto">
+
+    <div className="max-w-6xl mx-auto">
+
 
       <div className="mb-10">
-        <h1 className="text-4xl font-bold">
+
+        <h1 className="text-4xl font-bold text-white">
           New Player
         </h1>
 
         <p className="text-gray-400 mt-2">
           Register a new KICKCREW esports player.
         </p>
+
       </div>
+
+
 
       <form
         onSubmit={handleSubmit}
-        className="bg-[#111111] border border-[#D4AF37]/20 rounded-2xl p-8 space-y-6"
+        className="bg-[#111111] border border-[#D4AF37]/20 rounded-2xl p-8 space-y-8"
       >
 
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
 
           <div>
 
@@ -134,107 +214,85 @@ if (gameResult.success) {
 
             <ImageUpload
               value={form.profile_photo}
-              onChange={(url) =>
-                setForm((previous) => ({
+              onChange={(url)=>
+                setForm(previous=>({
                   ...previous,
-                  profile_photo: url,
+                  profile_photo:url
                 }))
               }
             />
 
           </div>
 
-          <div>
 
-            <label className="block mb-2 font-semibold">
-              Full Name
-            </label>
 
-            <input
-              type="text"
-              name="full_name"
-              value={form.full_name}
-              onChange={handleChange}
-              className="w-full bg-black border border-gray-700 rounded-xl p-3"
-            />
+          {[
+            ["full_name","Full Name"],
+            ["gamer_tag","Gamer Tag"],
+            ["email","Email"],
+            ["phone","Phone"],
+            ["role","Role"],
+            ["rank","Rank"],
+            ["country","Country"],
+          ].map(([name,label])=>(
 
-          </div>          <div>
+            <div key={name}>
 
-            <label className="block mb-2 font-semibold">
-              Gamer Tag
-            </label>
+              <label className="block mb-2 font-semibold">
+                {label}
+              </label>
 
-            <input
-              type="text"
-              name="gamer_tag"
-              value={form.gamer_tag}
-              onChange={handleChange}
-              className="w-full bg-black border border-gray-700 rounded-xl p-3"
-            />
+              <input
+                name={name}
+                value={(form as any)[name]}
+                onChange={handleChange}
+                className="w-full bg-black border border-gray-700 rounded-xl p-3"
+              />
 
-          </div>
+            </div>
 
-          <div>
+          ))}
 
-            <label className="block mb-2 font-semibold">
-              Email
-            </label>
 
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              className="w-full bg-black border border-gray-700 rounded-xl p-3"
-            />
 
-          </div>
+          {TEAM_GAMES.includes(form.game) && (
 
-          <div>
+            <div>
 
-            <label className="block mb-2 font-semibold">
-              Phone
-            </label>
+              <label className="block mb-2 font-semibold">
+                Team
+              </label>
 
-            <input
-              type="text"
-              name="phone"
-              value={form.phone}
-              onChange={handleChange}
-              className="w-full bg-black border border-gray-700 rounded-xl p-3"
-            />
+              <select
+                name="team_id"
+                value={form.team_id}
+                onChange={handleChange}
+                className="w-full bg-black border border-gray-700 rounded-xl p-3"
+              >
 
-          </div>
-
-          <div>
-
-            <label className="block mb-2 font-semibold">
-              Team
-            </label>
-
-            <select
-              name="team_id"
-              value={form.team_id}
-              onChange={handleChange}
-              className="w-full bg-black border border-gray-700 rounded-xl p-3"
-            >
-
-              <option value="">
-                Select Team
-              </option>
-
-              {teams.map((team) => (
-                <option
-                  key={team.id}
-                  value={team.id}
-                >
-                  {team.team_name}
+                <option value="">
+                  Select Team
                 </option>
-              ))}
 
-            </select>
 
-          </div>
+                {teams.map(team=>(
+
+                  <option
+                    key={team.id}
+                    value={String(team.id)}
+                  >
+                    {team.team_name}
+                  </option>
+
+                ))}
+
+              </select>
+
+            </div>
+
+          )}
+
+
 
           <div>
 
@@ -242,80 +300,35 @@ if (gameResult.success) {
               Game
             </label>
 
+
             <select
-  name="game"
-  value={form.game}
-  onChange={handleChange}
-  className="w-full bg-black border border-gray-700 rounded-xl p-3"
->
-
-  <option value="">
-    Select Game
-  </option>
-
-  {games.map((game) => (
-    <option
-      key={game.id}
-      value={game.game_name}
-    >
-      {game.game_name}
-    </option>
-  ))}
-
-</select>
-
-          </div>
-
-          <div>
-
-            <label className="block mb-2 font-semibold">
-              Role
-            </label>
-
-            <input
-              type="text"
-              name="role"
-              value={form.role}
+              name="game"
+              value={form.game}
               onChange={handleChange}
-              placeholder="Example: Duelist"
               className="w-full bg-black border border-gray-700 rounded-xl p-3"
-            />
+            >
+
+              <option value="">
+                Select Game
+              </option>
+
+
+              {games.map(game=>(
+
+                <option
+                  key={game.id}
+                  value={game.game_name}
+                >
+                  {game.game_name}
+                </option>
+
+              ))}
+
+            </select>
 
           </div>
 
-          <div>
 
-            <label className="block mb-2 font-semibold">
-              Rank
-            </label>
-
-            <input
-              type="text"
-              name="rank"
-              value={form.rank}
-              onChange={handleChange}
-              placeholder="Example: Immortal"
-              className="w-full bg-black border border-gray-700 rounded-xl p-3"
-            />
-
-          </div>
-
-          <div>
-
-            <label className="block mb-2 font-semibold">
-              Country
-            </label>
-
-            <input
-              type="text"
-              name="country"
-              value={form.country}
-              onChange={handleChange}
-              placeholder="Kenya"
-              className="w-full bg-black border border-gray-700 rounded-xl p-3"
-            />
-
-          </div>
 
           <div>
 
@@ -330,21 +343,33 @@ if (gameResult.success) {
               className="w-full bg-black border border-gray-700 rounded-xl p-3"
             >
 
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
-              <option value="Suspended">Suspended</option>
+              <option value="Active">
+                Active
+              </option>
+
+              <option value="Inactive">
+                Inactive
+              </option>
+
+              <option value="Suspended">
+                Suspended
+              </option>
 
             </select>
 
           </div>
 
+
         </div>
+
+
 
         <div>
 
           <label className="block mb-2 font-semibold">
             Player Bio
           </label>
+
 
           <textarea
             name="bio"
@@ -356,28 +381,41 @@ if (gameResult.success) {
 
         </div>
 
-        <div className="flex gap-4 pt-4">
+
+
+        <div className="flex gap-4">
+
 
           <button
             type="submit"
-            disabled={loading}
-            className="bg-[#D4AF37] text-black px-8 py-3 rounded-xl font-bold hover:bg-yellow-400 transition disabled:opacity-60"
+            disabled={saving}
+            className="bg-[#D4AF37] text-black px-8 py-3 rounded-xl font-bold hover:bg-yellow-400 disabled:opacity-50"
           >
-            {loading ? "Saving Player..." : "Save Player"}
+
+            {saving
+              ? "Saving Player..."
+              : "Save Player"}
+
           </button>
+
+
 
           <button
             type="button"
-            onClick={() => router.push("/admin/players")}
-            className="bg-gray-700 hover:bg-gray-600 px-8 py-3 rounded-xl transition"
+            onClick={()=>router.push("/admin/players")}
+            className="bg-gray-700 px-8 py-3 rounded-xl"
           >
             Cancel
           </button>
 
+
         </div>
+
 
       </form>
 
+
     </div>
+
   );
 }
