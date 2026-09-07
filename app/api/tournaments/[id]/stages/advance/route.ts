@@ -4,7 +4,7 @@ import { advanceByeMatch } from "@/lib/tournament/advance-knockout-match";
 
 interface Params {
   params: Promise<{
-    tournamentId: string;
+    id: string;
   }>;
 }
 
@@ -870,14 +870,15 @@ export async function POST(
      *
      * The route folder is:
      *
-     * [tournamentId]
+     * [id]
      *
-     * Therefore the parameter MUST be
-     * tournamentId, not id.
+     * Next.js provides the dynamic
+     * parameter as "id". We alias it
+     * locally to tournamentId because
+     * the rest of this logic uses that name.
      */
     const {
-      tournamentId:
-        tournamentIdParam,
+      id: tournamentIdParam,
     } = await params;
 
     const tournamentId =
